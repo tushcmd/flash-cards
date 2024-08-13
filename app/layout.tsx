@@ -5,6 +5,7 @@ import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@c
 import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/layout/nav";
 import Footer from "@/components/layout/footer";
+import { Toaster } from "@/components/ui/toaster";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -37,6 +38,7 @@ export default function RootLayout({
           ><Navbar />
             {children}
             <Footer />
+            <Toaster />
           </ThemeProvider>
 
         </body>

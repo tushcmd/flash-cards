@@ -10,18 +10,17 @@ const openai = new OpenAI({
     },
 });
 
-const systemPrompt = `You are a helpful assistant that generates flashcards, you take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
-Both front and back should be one sentence long.
-You should return in the following JSON format:
+const systemPrompt = `You are a helpful assistant that generates flashcards. You take in text and create exactly 10 flashcards from it. Both front and back should be one sentence long. You MUST return your response in the following JSON format, with no additional text before or after the JSON:
+
 {
-  "flashcards":[
+  "flashcards": [
     {
       "question": "Front of the card",
       "answer": "Back of the card"
-    }
+    },
+    // ... (8 more flashcards)
   ]
-}`
-
+}`;
 export async function POST(request: Request) {
     const data = await request.text();
 
@@ -40,12 +39,25 @@ export async function POST(request: Request) {
         response_format: { type: 'json_object' },
     })
 
-    // Check if the content is not null before parsing
+    // // Check if the content is not null before parsing
+    // if (completion.choices[0]?.message?.content) {
+    //     const flashcards = JSON.parse(completion.choices[0].message.content);
+    //     return NextResponse.json(flashcards);
+    // } else {
+    //     // Handle the case where the content is null or not present
+    //     return NextResponse.json({ error: "Failed to generate flashcards." }, { status: 500 });
+    // }
     if (completion.choices[0]?.message?.content) {
-        const flashcards = JSON.parse(completion.choices[0].message.content);
-        return NextResponse.json(flashcards);
+        try {
+            const flashcards = JSON.parse(completion.choices[0].message.content);
+            return NextResponse.json(flashcards);
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            console.log('Raw content:', completion.choices[0].message.content);
+            return NextResponse.json({ error: "Invalid response format" }, { status: 500 });
+        }
     } else {
-        // Handle the case where the content is null or not present
         return NextResponse.json({ error: "Failed to generate flashcards." }, { status: 500 });
     }
 }
+
