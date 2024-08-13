@@ -1,0 +1,8 @@
+
+export default function Pricing() {
+    return (
+        <div className="page-container flex items-center min-h-screen">
+            <h1 className='text-3xl text-foreground font-semibold'>Generate Flashcards</h1>
+        </div>
+    );
+}

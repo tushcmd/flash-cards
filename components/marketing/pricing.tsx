@@ -50,7 +50,7 @@ export default function PricingSection() {
                         title="Pro"
                         description="Unlock more features for serious learners."
                         //price="$9/mo"
-                        price={isYearly ? "$80/year" : "$9/mo"}
+                        price={isYearly ? "$90/year" : "$9/mo"}
                         features={[
                             "Unlimited flashcards",
                             "Advanced study modes",
