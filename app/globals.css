@@ -59,11 +59,14 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+
+/* LAYOUTS  */
+@layer components {
+  .layout-container {
+    @apply container mx-auto max-w-7xl px-5;
   }
-  body {
-    @apply bg-background text-foreground;
+
+  .page-container {
+    @apply layout-container flex flex-col gap-16 py-20;
   }
 }

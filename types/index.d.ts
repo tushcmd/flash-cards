@@ -1,3 +1,16 @@
+export type SiteConfig = {
+    name: string;
+    description: string;
+    url: string;
+    ogImage: string;
+    mailSupport: string;
+    links: {
+        twitter: string;
+        github: string;
+        portfolio: string;
+    };
+};
+
 interface FlashcardSet {
     setId: string;
     setName: string;

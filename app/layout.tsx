@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { ThemeProvider } from "next-themes";
+import Navbar from "@/components/layout/nav";
+import Footer from "@/components/layout/footer";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +23,23 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <SignedOut>
+          {/* <SignedOut>
             <SignInButton />
           </SignedOut>
           <SignedIn>
             <UserButton />
-          </SignedIn>
-          {children}</body>
+          </SignedIn> */}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          ><Navbar />
+            {children}
+            <Footer />
+          </ThemeProvider>
+
+        </body>
       </html>
     </ClerkProvider >
   );
