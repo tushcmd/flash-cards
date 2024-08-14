@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Flashcard from '../../.history/components/core/flash-card_20240814005515';
 
 export default function Hero() {
     const { isSignedIn } = useUser(); // Check if user is signed in
@@ -19,17 +20,10 @@ export default function Hero() {
     return (
         // mt-16
         <div className="layout-container mx-auto pb-4 px-4 sm:px-8">
-            {/* <div className="text-center space-y-4">
-                <h1 className="text-3xl md:text-4xl">
-                    Optimize your study with <br />
-                    <span className="font-bold">Flashcards</span>
-                </h1>
-                <p className="leading-relaxed text-muted-foreground max-w-4xl mx-auto text-xl">
-                    It is established that concepts stick better with quick revision questions. Our flashcards offer you the best experience when revising in whichever topics.
-                </p>
-            </div> */}
             <div className="text-center items-center flex flex-col gap-5">
                 <h1 className="text-6xl lg:text-8xl tracking-tighter font-bold bg-gradient-to-br from-foreground via-secondary-foreground/90 to-muted-foreground bg-clip-text text-transparent drop-shadow-sm ">
+                    AI Flashcards
+                    <br />
                     Your Best
                     <br />
                     Learning Companion
