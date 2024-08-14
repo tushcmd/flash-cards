@@ -2,17 +2,62 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Check } from "lucide-react"
+import { Check, Router } from "lucide-react"
 import { useState } from 'react'
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import getStripe from "@/utils/get-stripe"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@clerk/nextjs"
 
 
 
 export default function PricingSection() {
-
-
     const [isYearly, setIsYearly] = useState(false);
+    const { isSignedIn } = useAuth();
+    const router = useRouter();
+
+    const handleSubmit = async () => {
+        try {
+            const checkoutSession = await fetch('/api/checkout-sessions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ subscriptionType: isYearly ? 'yearly' : 'monthly' }),
+            });
+
+            if (!checkoutSession.ok) {
+                throw new Error('Failed to create checkout session');
+            }
+
+            const { sessionId } = await checkoutSession.json();
+            const stripe = await getStripe();
+
+            if (!stripe) {
+                throw new Error('Stripe initialization failed.');
+            }
+
+            const { error } = await stripe.redirectToCheckout({ sessionId });
+
+            if (error) {
+                console.error('Stripe redirect error:', error);
+            }
+        } catch (error) {
+            console.error('Error in handleSubmit:', error);
+        }
+    };
+
+    const handleBasicClick = () => {
+        if (!isSignedIn) {
+            router.push('/sign-in');
+        }
+    };
+
+    const handleEnterpriseClick = () => {
+        window.location.href = 'mailto:muturidavid854@gmail.com';
+    };
+
     return (
         <section id="pricing" className="layout-container my-16 mx-auto pb-4 px-4 sm:px-8">
             <div className="container grid items-center justify-center gap-12 px-4 md:px-6">
@@ -43,13 +88,14 @@ export default function PricingSection() {
                             "Basic study modes",
                             "Limited analytics"
                         ]}
-                        buttonText="Sign up for free"
+                        buttonText={isSignedIn ? "Current Plan" : "Sign up for free"}
                         buttonVariant="outline"
+                        onClick={handleBasicClick}
+                        disabled={isSignedIn}
                     />
                     <PricingCard
                         title="Pro"
                         description="Unlock more features for serious learners."
-                        //price="$9/mo"
                         price={isYearly ? "$90/year" : "$9/mo"}
                         features={[
                             "Unlimited flashcards",
@@ -59,6 +105,7 @@ export default function PricingSection() {
                         ]}
                         buttonText="Get Pro"
                         buttonVariant="default"
+                        onClick={handleSubmit}
                     />
                     <PricingCard
                         title="Enterprise"
@@ -73,6 +120,7 @@ export default function PricingSection() {
                         ]}
                         buttonText="Contact Sales"
                         buttonVariant="default"
+                        onClick={handleEnterpriseClick}
                     />
                 </div>
             </div>
@@ -87,9 +135,11 @@ interface PricingCardProps {
     features: string[];
     buttonText: string;
     buttonVariant: "outline" | "default" | "destructive" | "secondary" | "ghost" | "link";
+    onClick?: () => void;
+    disabled?: boolean;
 }
 
-function PricingCard({ title, description, price, features, buttonText, buttonVariant }: PricingCardProps) {
+function PricingCard({ title, description, price, features, buttonText, buttonVariant, onClick, disabled }: PricingCardProps) {
     return (
         <Card className="flex h-full flex-col justify-between">
             <CardHeader>
@@ -108,7 +158,12 @@ function PricingCard({ title, description, price, features, buttonText, buttonVa
                 </ul>
             </CardContent>
             <CardFooter>
-                <Button variant={buttonVariant} className="w-full">
+                <Button
+                    variant={buttonVariant}
+                    className="w-full"
+                    onClick={onClick}
+                    disabled={disabled}
+                >
                     {buttonText}
                 </Button>
             </CardFooter>
