@@ -8,15 +8,14 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { RefreshCw, ArrowRight, ArrowLeft } from "lucide-react"
-import { useState } from "react"
+import { SetStateAction, useState } from "react"
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
-
-interface Flashcard {
-    question: string
-    answer: string
-}
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { Input } from "../ui/input"
+import { saveFlashcardSet } from "@/firebase/firestore/utils"
+import type { Flashcard } from "@/types"
 
 const formSchema = z.object({
     text: z.string().min(1, { message: "Text is required" }).max(500, { message: "Text must be 500 characters or less" }),
@@ -28,6 +27,46 @@ export default function Flashcard() {
     const [flashcards, setFlashcards] = useState<Flashcard[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const { toast } = useToast()
+
+    const [setName, setSetName] = useState('');
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const handleOpenDialog = () => setDialogOpen(true);
+    const handleCloseDialog = () => setDialogOpen(false);
+
+
+
+
+    const handleSaveSet = async () => {
+        try {
+            // Assuming `flashcards` is an array of objects with `question` and `answer`
+            const flashcardsWithIds: Flashcard[] = flashcards.map((flashcard, index) => ({
+                ...flashcard,
+                flashcardId: `flashcard-${index}`, // Generate a unique ID for each flashcard
+                setId: 'set-id', // Replace with the actual set ID
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            }));
+
+            await saveFlashcardSet('user-id', setName, flashcardsWithIds); // Replace 'user-id' with actual user ID
+            toast({
+                variant: "default",
+                title: "Success",
+                description: "Flashcards saved successfully!",
+            });
+            handleCloseDialog();
+            setSetName('');
+            setFlashcards([]); // Clear the flashcards state if needed
+        } catch (error) {
+            console.error("Error saving flashcards:", error);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "There was an error saving the flashcards.",
+            });
+        }
+    };
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -169,14 +208,36 @@ export default function Flashcard() {
 
                         </form>
                     </Form>
-                    {flashcards && (
-                        <Button
-                            variant="outline"
-                            className="w-full"
-                        // onClick={handleSaveSet}
-                        >
-                            Save Set
-                        </Button>
+                    {flashcards.length > 0 && (
+                        <>
+                            <Button
+                                variant="outline"
+                                className="w-full"
+                                onClick={() => setDialogOpen(true)}
+                            >
+                                Save Set
+                            </Button>
+
+                            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Save Flashcard Set</DialogTitle>
+                                    </DialogHeader>
+                                    <div className="grid gap-4 py-4">
+                                        <Label htmlFor="setName">Set Name</Label>
+                                        <Input
+                                            id="setName"
+                                            value={setName}
+                                            onChange={(e: { target: { value: SetStateAction<string> } }) => setSetName(e.target.value)}
+                                            placeholder="Enter flashcard set name"
+                                        />
+                                    </div>
+                                    <DialogFooter>
+                                        <Button onClick={handleSaveSet}>Save</Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
+                        </>
                     )}
                 </CardContent>
             </Card>
