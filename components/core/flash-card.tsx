@@ -34,6 +34,26 @@ export default function Flashcard() {
     const handleOpenDialog = () => setDialogOpen(true);
     const handleCloseDialog = () => setDialogOpen(false);
 
+    // Key Events    
+    useEffect(() => {
+        const handleKeyDown = (event: { key: string; }) => {
+            if (event.key === 'ArrowRight') {
+                handleNext();
+            } else if (event.key === 'ArrowLeft') {
+                handlePrevious();
+            } else if (event.key === ' ' || event.key === 'Enter') {
+                handleFlip();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        // Cleanup function
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    },);
+
 
 
 

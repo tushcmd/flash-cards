@@ -48,6 +48,28 @@ export default function FlashcardSetPage() {
         setFlip(false);
     };
 
+    // Key Events    
+    useEffect(() => {
+        const handleKeyDown = (event: { key: string; }) => {
+            if (event.key === 'ArrowRight') {
+                handleNext();
+            } else if (event.key === 'ArrowLeft') {
+                handlePrevious();
+            } else if (event.key === ' ' || event.key === 'Enter') {
+                handleFlip();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        // Cleanup function
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    },);
+
+
+
     if (loading) return (
         <div className="min-h-screen flex justify-center">
             <Loader2 className="w-16 h-16 animate-spin text-primary" />
@@ -91,14 +113,29 @@ export default function FlashcardSetPage() {
                                 </CardContent>
                             </Card>
                             <div className="flex justify-between mt-4">
-                                <Button onClick={handleFlip} variant="ghost" size="icon" disabled={!currentCard}>
+                                <Button
+                                    onClick={handleFlip}
+                                    variant="ghost"
+                                    size="icon"
+                                    disabled={!currentCard}
+                                >
                                     <RefreshCw className="h-6 w-6" />
                                 </Button>
                                 <div>
-                                    <Button onClick={handlePrevious} variant="ghost" size="icon" disabled={!currentCard}>
+                                    <Button
+                                        onClick={handlePrevious}
+                                        variant="ghost"
+                                        size="icon"
+                                        disabled={!currentCard}
+                                    >
                                         <ArrowLeft className="h-6 w-6" />
                                     </Button>
-                                    <Button onClick={handleNext} variant="ghost" size="icon" disabled={!currentCard}>
+                                    <Button
+                                        onClick={handleNext}
+                                        variant="ghost"
+                                        size="icon"
+                                        disabled={!currentCard}
+                                    >
                                         <ArrowRight className="h-6 w-6" />
                                     </Button>
                                 </div>
