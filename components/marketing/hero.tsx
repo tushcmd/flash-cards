@@ -52,13 +52,14 @@ export default function Hero() {
                     </SignInButton>
                 )}
             </div>
-            <div className="text-center justify-center items-center flex mt-6">
+            <div className="text-center justify-center items-center flex mt-6 py-4">
                 <Image
                     className="rounded-lg"
-                    src="/_static/flashc60.png"
+                    // src="/_static/flashc60.png"
+                    src="/_static/flash-card-hero.png"
                     alt="alt"
-                    width={494}
-                    height={291}
+                    width={590}
+                    height={328}
                     style={{
                         maskImage: `linear-gradient(to top, transparent, black 20%)`,
                     }}

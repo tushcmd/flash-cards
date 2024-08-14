@@ -9,8 +9,9 @@ export default function Home() {
     <main className="page-container flex flex-col items-center justify-center">
       <Hero />
       {/* <FeaturesSection /> */}
-      <CallToAction />
+
       <PricingSection />
+      <CallToAction />
       <FAQSection />
 
     </main>
