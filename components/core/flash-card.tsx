@@ -53,6 +53,7 @@ export default function Flashcard() {
                 variant: "default",
                 title: "Success",
                 description: "Flashcards saved successfully!",
+                action: <ToastAction altText="View Sets"><a href="/flashcards">View Sets</a></ToastAction>,
             });
             handleCloseDialog();
             setSetName('');
