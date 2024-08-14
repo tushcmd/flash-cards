@@ -1,5 +1,11 @@
 import { db } from "../config";
-import { collection, doc, getDocs, writeBatch } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  writeBatch,
+} from "firebase/firestore";
 import { Flashcard, FlashcardSet } from "@/types";
 
 const COLLECTION_NAME = "flashcardSets";
@@ -67,3 +73,41 @@ export const fetchFlashcardSets = async (
     throw new Error("Failed to fetch flashcard sets.");
   }
 };
+
+export async function fetchFlashcardsBySet(
+  userId: string,
+  setId: string,
+): Promise<Flashcard[]> {
+  try {
+    const flashcardsCollectionRef = collection(
+      db,
+      "users",
+      userId,
+      "flashcardSets",
+      setId,
+      "flashcards",
+    );
+    const q = query(flashcardsCollectionRef);
+
+    const querySnapshot = await getDocs(q);
+    const flashcards: Flashcard[] = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const flashcard: Flashcard = {
+        flashcardId: doc.id,
+        setId: setId,
+        question: data.question,
+        answer: data.answer,
+        createdAt: data.createdAt?.toDate() || new Date(),
+        updatedAt: data.updatedAt?.toDate() || new Date(),
+      };
+      flashcards.push(flashcard);
+    });
+
+    return flashcards;
+  } catch (error) {
+    console.error("Error fetching flashcards:", error);
+    throw error;
+  }
+}

@@ -21,7 +21,7 @@ export default function Hero() {
         // mt-16
         <div className="layout-container mx-auto pb-4 px-4 sm:px-8">
             <div className="text-center items-center flex flex-col gap-5">
-                <h1 className="text-6xl lg:text-8xl tracking-tighter font-bold bg-gradient-to-br from-foreground via-secondary-foreground/90 to-muted-foreground bg-clip-text text-transparent drop-shadow-sm ">
+                <h1 className="text-5xl lg:text-7xl tracking-tighter font-bold bg-gradient-to-br from-foreground via-secondary-foreground/90 to-muted-foreground bg-clip-text text-transparent drop-shadow-sm ">
                     AI Flashcards
                     <br />
                     Your Best
