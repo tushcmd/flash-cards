@@ -45,12 +45,13 @@ export default function FlashcardsPage() {
                     </Button>
                 </Link>
             </div>
+            {/* overflow-y-auto custom-scrollbar */}
             <ul className="space-y-4">
                 {flashcardSets.map((set) => (
                     <li key={set.setId}>
                         <Link href={`/flashcards/${set.setId}`}>
                             {/* className="hover:shadow-md transition duration-150 ease-in-out" */}
-                            <Card className="lg:hover:scale-[1.04] duration-200 transition ease-in-out ">
+                            <Card className="lg:hover:scale-[1.02] duration-200 transition ease-in-out ">
                                 <CardContent className="p-4">
                                     <p className="text-xl text-primary">{set.setName}</p>
                                     <p className="text-sm text-muted-foreground mt-1">

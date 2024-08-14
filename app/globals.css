@@ -59,7 +59,6 @@
   }
 }
 
-
 /* LAYOUTS  */
 @layer components {
   .layout-container {
@@ -69,4 +68,13 @@
   .page-container {
     @apply layout-container flex flex-col gap-16 py-20;
   }
+}
+
+.custom-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none; /* WebKit */
 }
