@@ -35,7 +35,7 @@ export default function Hero() {
             <div className="text-center space-x-4 space-y-3 mt-6 justify-center items-center sm:space-x-6 sm:space-y-0 sm:flex">
 
                 <Button variant="outline" size={"lg"}>
-                    <a href="#pricing">Go Pricing</a>
+                    <a href="/pricing">Go Pricing</a>
                 </Button>
 
                 {isSignedIn ? (

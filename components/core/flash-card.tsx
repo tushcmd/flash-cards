@@ -92,7 +92,7 @@ export default function Flashcard() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen p-4">
-            <Card className="w-full max-w-md">
+            <Card className="w-full max-w-3xl">
                 <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Flashcard App</CardTitle>
                     {currentCard && (
@@ -129,7 +129,7 @@ export default function Flashcard() {
                         </div>
                     </div>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-2">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 mb-4 space-y-2">
                             <FormField
                                 control={form.control}
                                 name="text"
@@ -166,17 +166,18 @@ export default function Flashcard() {
                                     Copy Question
                                 </Button>
                             )} */}
-                            {flashcards && (
-                                <Button
-                                    variant="outline"
-                                    className="w-full"
-                                // onClick={handleSaveSet}
-                                >
-                                    Save Set
-                                </Button>
-                            )}
+
                         </form>
                     </Form>
+                    {flashcards && (
+                        <Button
+                            variant="outline"
+                            className="w-full"
+                        // onClick={handleSaveSet}
+                        >
+                            Save Set
+                        </Button>
+                    )}
                 </CardContent>
             </Card>
         </div>
