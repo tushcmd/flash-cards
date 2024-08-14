@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { fetchFlashcardsBySet } from '@/firebase/firestore/utils';
+import { deleteFlashcardSet, fetchFlashcardsBySet } from '@/firebase/firestore/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { RefreshCw, ArrowRight, ArrowLeft, ChevronLeft, Loader2 } from 'lucide-react';
+import { RefreshCw, ArrowRight, ArrowLeft, ChevronLeft, Loader2, Trash } from 'lucide-react';
 import type { Flashcard } from '@/types';
 
 export default function FlashcardSetPage() {
@@ -76,6 +76,16 @@ export default function FlashcardSetPage() {
         </div>
     );
 
+    const handleDeleteSet = async () => {
+        try {
+            const userId = "user-id"; // Replace with actual userId
+            await deleteFlashcardSet(userId, id as string);
+            router.push('/flashcards'); // Redirect to flashcard sets page after deletion
+        } catch (error) {
+            console.error('Error deleting flashcard set:', error);
+        }
+    };
+
     return (
         <div className="min-h-screen p-4 relative page-container">
             {/* Back button in top-left corner */}
@@ -87,7 +97,15 @@ export default function FlashcardSetPage() {
             >
                 <ChevronLeft className="h-6 w-6" />
             </Button>
-
+            <Button
+                variant="outline"
+                onClick={handleDeleteSet}
+                className="absolute top-4 right-4"
+                size="icon"
+            >
+                {/* <span>Delete Set</span> */}
+                <Trash className="h-6 w-6" />
+            </Button>
             {flashcards.length > 0 ? (
                 <div className="flex flex-col items-center justify-center min-h-screen p-4">
                     <Card className="w-full max-w-3xl">

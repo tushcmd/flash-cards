@@ -111,3 +111,28 @@ export async function fetchFlashcardsBySet(
     throw error;
   }
 }
+
+export const deleteFlashcardSet = async (userId: string, setId: string) => {
+  try {
+    const batch = writeBatch(db);
+    const flashcardSetRef = doc(db, `users/${userId}/flashcardSets/${setId}`);
+
+    // Get all flashcards in the set
+    const flashcardsCollectionRef = collection(flashcardSetRef, "flashcards");
+    const flashcardsSnapshot = await getDocs(flashcardsCollectionRef);
+
+    // // Delete each flashcard
+    // flashcardsSnapshot.forEach((doc) => {
+    //   batch.delete(doc.ref);
+    // });
+
+    // Delete the flashcard set
+    batch.delete(flashcardSetRef);
+
+    await batch.commit();
+    console.log("Flashcard set and its flashcards deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting flashcard set:", error);
+    throw new Error("An error occurred while deleting the flashcard set.");
+  }
+};
