@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import Flashcard from '../../.history/components/core/flash-card_20240814005515';
+import Flashcard from "../core/flash-card";
 
 export default function Hero() {
     const { isSignedIn } = useUser(); // Check if user is signed in
