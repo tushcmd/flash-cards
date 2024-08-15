@@ -1,4 +1,5 @@
-import { db } from "../config";
+//import { db } from "../config";
+import { initializeFirebase } from "../config";
 import {
   collection,
   doc,
@@ -17,6 +18,7 @@ export const saveFlashcardSet = async (
   flashcards: Flashcard[],
 ): Promise<string> => {
   try {
+    const db = await initializeFirebase();
     const userDocRef = doc(db, "users", userId);
     const flashcardSetRef = doc(collection(userDocRef, COLLECTION_NAME));
 
@@ -56,6 +58,7 @@ export const fetchUserFlashcardSets = async (
   userId: string,
 ): Promise<FlashcardSet[]> => {
   try {
+    const db = await initializeFirebase();
     const setsRef = collection(db, `users/${userId}/flashcardSets`);
     const snapshot = await getDocs(setsRef);
     const sets = snapshot.docs.map((doc) => {
@@ -80,6 +83,7 @@ export async function fetchFlashcardsBySet(
   setId: string,
 ): Promise<Flashcard[]> {
   try {
+    const db = await initializeFirebase();
     const flashcardsCollectionRef = collection(
       db,
       "users",
@@ -115,6 +119,7 @@ export async function fetchFlashcardsBySet(
 
 export const deleteFlashcardSet = async (userId: string, setId: string) => {
   try {
+    const db = await initializeFirebase();
     const batch = writeBatch(db);
     const flashcardSetRef = doc(db, `users/${userId}/flashcardSets/${setId}`);
 
