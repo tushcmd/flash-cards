@@ -7,6 +7,7 @@ import Navbar from "@/components/layout/nav";
 import Footer from "@/components/layout/footer";
 import { Toaster } from "@/components/ui/toaster";
 
+export const dynamic = 'force-dynamic'
 
 const inter = Inter({ subsets: ["latin"] });
 

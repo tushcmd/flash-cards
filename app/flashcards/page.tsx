@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, Plus } from 'lucide-react';
 
+
 export default function FlashcardsPage() {
     const [flashcardSets, setFlashcardSets] = useState<FlashcardSet[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -66,3 +67,5 @@ export default function FlashcardsPage() {
         </div>
     );
 }
+
+// export const dynamic = 'force-dynamic'
