@@ -62,6 +62,49 @@ export const saveFlashcardSet = async (
 // ): Promise<string> => {
 //   try {
 //     const db = await initializeFirebase();
+//     const flashcardSetRef = doc(
+//       collection(db, `users/${userId}/flashcardSets`),
+//     );
+
+//     const now = new Date();
+
+//     const batch = writeBatch(db);
+
+//     // Set flashcard set document with auto-generated ID
+//     batch.set(flashcardSetRef, {
+//       setName,
+//       userId,
+//       createdAt: now,
+//       updatedAt: now,
+//     });
+
+//     // Add flashcards to a subcollection
+//     flashcards.forEach((flashcard) => {
+//       const flashcardRef = doc(collection(flashcardSetRef, "flashcards"));
+//       batch.set(flashcardRef, {
+//         ...flashcard,
+//         setId: flashcardSetRef.id,
+//         createdAt: now,
+//         updatedAt: now,
+//       });
+//     });
+
+//     await batch.commit();
+//     console.log("Flashcards saved successfully!");
+//     return flashcardSetRef.id; // Return the auto-generated ID
+//   } catch (error) {
+//     console.error("Error saving flashcards:", error);
+//     throw new Error("An error occurred while saving flashcards.");
+//   }
+// };
+
+// export const saveFlashcardSet = async (
+//   userId: string,
+//   setName: string,
+//   flashcards: Flashcard[],
+// ): Promise<string> => {
+//   try {
+//     const db = await initializeFirebase();
 //     const userDocRef = doc(db, "users", userId);
 //     const flashcardSetRef = doc(collection(userDocRef, COLLECTION_NAME));
 
