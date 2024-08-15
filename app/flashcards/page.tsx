@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { fetchFlashcardSets } from '@/firebase/firestore/utils';
+import { fetchUserFlashcardSets } from '@/firebase/firestore/utils';
 import type { FlashcardSet } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -18,7 +18,7 @@ export default function FlashcardsPage() {
             try {
                 // Replace with actual userId
                 const userId = "user-id";
-                const sets = await fetchFlashcardSets(userId);
+                const sets = await fetchUserFlashcardSets(userId);
                 setFlashcardSets(sets);
             } catch (error) {
                 console.error('Error fetching flashcard sets:', error);
